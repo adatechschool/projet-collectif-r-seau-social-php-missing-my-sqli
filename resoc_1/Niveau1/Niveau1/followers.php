@@ -20,7 +20,9 @@
                 <p>Sur cette page vous trouverez la liste des personnes qui
                     suivent les messages de l'utilisatrice
                     n°
-                    <?php echo intval($_GET['user_id']) ?>
+                    <?php
+                    echo intval($_GET['user_id']);
+                    ?>
                 </p>
 
             </section>
@@ -28,9 +30,9 @@
         <main class='contacts'>
             <?php
             // Etape 1: récupérer l'id de l'utilisateur
-            $userId = intval($_GET['user_id']);
+            include 'user.php';
             // Etape 2: se connecter à la base de donnée
-            $mysqli = new mysqli("localhost", "root", "root", "socialnetwork");
+            include 'getDataBase.php';
             // Etape 3: récupérer le nom de l'utilisateur
             $laQuestionEnSql = "
                     SELECT users.*

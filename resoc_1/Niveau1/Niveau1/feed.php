@@ -22,13 +22,13 @@
         /**
          * Etape 1: Le mur concerne un utilisateur en particulier
          */
-        $userId = intval($_GET['user_id']);
+        include 'user.php';
         ?>
         <?php
         /**
          * Etape 2: se connecter à la base de donnée
          */
-        $mysqli = new mysqli("localhost", "root", "root", "socialnetwork");
+        include 'getDataBase.php';
         ?>
 
         <aside>
