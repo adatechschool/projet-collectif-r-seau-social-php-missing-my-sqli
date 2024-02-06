@@ -74,8 +74,8 @@
                     posts.user_id,
                     users.alias as author_name,  
                     count(likes.id) as like_number,  
-                    GROUP_CONCAT(DISTINCT tags.id) AS tag_ids,
-                    GROUP_CONCAT(DISTINCT tags.label) AS taglist 
+                    GROUP_CONCAT(DISTINCT tags.id ORDER BY tags.label ASC) AS tag_ids,
+                    GROUP_CONCAT(DISTINCT tags.label ORDER BY tags.label ASC) AS taglist 
                     FROM posts
                     JOIN users ON  users.id=posts.user_id
                     LEFT JOIN posts_tags ON posts.id = posts_tags.post_id  
@@ -99,7 +99,7 @@
             while ($post = $lesInformations->fetch_assoc()) {
                 //la ligne ci-dessous doit etre supprimée mais regardez ce 
                 //qu'elle affiche avant pour comprendre comment sont organisées les information dans votre 
-                // echo "<pre>" . print_r($post, 1) . "</pre>";
+                //  echo "<pre>" . print_r($post, 1) . "</pre>";
             
                 // @todo : Votre mission c'est de remplacer les AREMPLACER par les bonnes valeurs
                 // ci-dessous par les bonnes valeurs cachées dans la variable $post 
@@ -139,8 +139,7 @@
                             }
                         }
                         ?>
-                        <a href="tags.php?tag_id=<?php echo $post['tags'] ?>">TEST1</a>
-                        <a href="tags.php?tag_id=<?php echo $tags['id'] ?>">TEST2</a>
+                        
                     </footer>
                 </article>
                 <?php

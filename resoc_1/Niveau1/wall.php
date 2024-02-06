@@ -57,9 +57,12 @@
              * Etape 3: récupérer tous les messages de l'utilisatrice
              */
             $laQuestionEnSql = "
-                    SELECT posts.content, posts.created, users.alias as author_name, 
-                    COUNT(likes.id) as like_number, GROUP_CONCAT(DISTINCT tags.label) AS taglist 
-                    FROM posts
+                    SELECT posts.content, 
+                    posts.created, 
+                    users.alias as author_name, 
+                    COUNT(likes.id) as like_number, 
+                    GROUP_CONCAT(DISTINCT tags.id ORDER BY tags.label ASC) AS tag_ids,
+                    GROUP_CONCAT(DISTINCT tags.label ORDER BY tags.label ASC) AS taglist                     FROM posts
                     JOIN users ON  users.id=posts.user_id
                     LEFT JOIN posts_tags ON posts.id = posts_tags.post_id  
                     LEFT JOIN tags       ON posts_tags.tag_id  = tags.id 
@@ -78,7 +81,7 @@
              */
             while ($post = $lesInformations->fetch_assoc()) {
 
-                //echo "<pre>" . print_r($post, 1) . "</pre>";
+                // echo "<pre>" . print_r($post, 1) . "</pre>";
                 ?>
                 <article>
                     <h3>
@@ -96,9 +99,22 @@
                         <small>♥
                             <?php echo $post['like_number'] ?>
                         </small>
-                        <a href="">#
-                            <?php echo $post['taglist'] ?>
-                        </a>,
+                        
+                        <?php 
+                        $tags = explode(',', $post['taglist']); // Explode the taglist into an array of tags
+                        $tagIDs = explode(',', $post['tag_ids']);
+                        $totalTags = count($tags); // Get the total number of tags
+                        foreach ($tags as $index => $tag) {
+                            // Trim each tag to remove any leading or trailing spaces
+                            $tag = trim($tag);
+                            // Display each tag preceded by #
+                            echo '<a href="tags.php?tag_id=' . $tagIDs[$index] . '">#' . $tag . '</a>';
+                            // Append a comma if it's not the last tag
+                            if ($index < $totalTags - 1) {
+                                echo ', ';
+                            }
+                        }
+                        ?>
 
                     </footer>
                 </article>
