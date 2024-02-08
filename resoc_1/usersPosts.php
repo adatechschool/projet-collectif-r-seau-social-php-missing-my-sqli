@@ -1,6 +1,6 @@
 <?php
 include 'header.php';
-include 'checkConnection.php';
+include 'user.php';
 ?>
 
 <!doctype html>
@@ -41,9 +41,9 @@ include 'checkConnection.php';
             /**
              * Etape 3: récupérer le nom de l'utilisateur
              */
-            // $laQuestionEnSql = "SELECT * FROM users WHERE id= '$userId' ";
-            // $lesInformations = $mysqli->query($laQuestionEnSql);
-            // $user = $lesInformations->fetch_assoc();
+            $laQuestionEnSql = "SELECT * FROM posts WHERE id= '$userId' ";
+            $lesInformations = $mysqli->query($laQuestionEnSql);
+            $user = $lesInformations->fetch_assoc();
             //@todo: afficher le résultat de la ligne ci dessous, remplacer XXX par l'alias et effacer la ligne ci-dessous
             //echo "<pre>" . print_r($user, 1) . "</pre>";
             ?> -->
@@ -54,93 +54,20 @@ include 'checkConnection.php';
                     (n°
                     <?php echo $userId ?>)
                 </p>
+
+                <button type="button" onClick="
+                ">Suivre</button>
             </section>
         </aside>
         <main>
-            <article>
-                <h2>Poster un message</h2>
-                <?php
-                /**
-                 * BD
-                 */
 
-
-                include 'getDataBase.php';
-
-                /**
-                 * Récupération de la liste des auteurs
-                 */
-                // $listAuteurs = [];
-                // $laQuestionEnSql = "SELECT * FROM users";
-                // $lesInformations = $mysqli->query($laQuestionEnSql);
-                // while ($user = $lesInformations->fetch_assoc()) {
-                //     $listAuteurs[$user['id']] = $user['alias'];
-                // }
-                
-
-                /**
-                 * TRAITEMENT DU FORMULAIRE
-                 */
-                // Etape 1 : vérifier si on est en train d'afficher ou de traiter le formulaire
-                // si on recoit un champs email rempli il y a une chance que ce soit un traitement
-                $enCoursDeTraitement = isset($_POST['message']);
-
-
-
-                if ($enCoursDeTraitement) {
-                    // on ne fait ce qui suit que si un formulaire a été soumis.
-                    // Etape 2: récupérer ce qu'il y a dans le formulaire @todo: c'est là que votre travaille se situe
-                    // observez le résultat de cette ligne de débug (vous l'effacerez ensuite)
-                    // echo "<pre>" . print_r($_POST, 1) . "</pre>";
-                    // et complétez le code ci dessous en remplaçant les ???
-                    $authorId = $_SESSION['connected_id'];
-                    $postContent = $_POST['message'];
-
-
-                    //Etape 3 : Petite sécurité
-                    // pour éviter les injection sql : https://www.w3schools.com/sql/sql_injection.asp
-                    $authorId = intval($mysqli->real_escape_string($authorId));
-                    $postContent = $mysqli->real_escape_string($postContent);
-                    //Etape 4 : construction de la requete
-                    $lInstructionSql = "INSERT INTO posts "
-                        . "(id, user_id, content, created) "
-                        . "VALUES (NULL, "
-                        . $authorId . ", "
-                        . "'" . $postContent . "', "
-                        . "NOW());"
-                    ;
-                    // echo $lInstructionSql;
-                    // Etape 5 : execution
-                    $ok = $mysqli->query($lInstructionSql);
-                    if (!$ok) {
-                        echo "Impossible d'ajouter le message: " . $mysqli->error;
-                    }
-                    //  else {
-                    //     echo "Message posté en tant que :" . $listAuteurs[$authorId];
-                    // }
-                }
-                ?>
-                <form action="wall.php" method="post">
-                    <input type='hidden' name='???' value='achanger'>
-                    <dl>
-                        <!-- <dt><label for='auteur'>Auteur</label></dt>
-                        <dd><select name='auteur'> -->
-
-                        <!-- foreach ($listAuteurs as $id => $alias)
-                                    echo "<option value='$id'>$alias</option>";
-                                 -->
-                        </select></dd>
-                        <dt><label for='message'>Message</label></dt>
-                        <dd><textarea name='message'></textarea></dd>
-                    </dl>
-                    <input type='submit'>
-                </form>
-            </article>
 
             <?php
             /**
              * Etape 3: récupérer tous les messages de l'utilisatrice
              */
+
+
             $laQuestionEnSql = "
                     SELECT posts.content, 
                     posts.created, 

@@ -1,6 +1,6 @@
 <?php
-    include 'header.php';
-    include 'checkConnection.php';
+include 'header.php';
+include 'checkConnection.php';
 ?>
 
 <!doctype html>
@@ -24,7 +24,7 @@
                     n°
                     <?php
                     echo intval($_SESSION['connected_id'])
-                    ?>
+                        ?>
                 </p>
 
             </section>
@@ -47,15 +47,19 @@
             // Etape 4: à vous de jouer
             //@todo: faire la boucle while de parcours des abonnés et mettre les bonnes valeurs ci dessous 
             while ($user = $lesInformations->fetch_assoc()) {
-            
+
                 ?>
-            
-            <article>
-                <img src="user.jpg" alt="blason" />
-                <h3><a href="wall.php?user_id=<?php echo $user['id'] ?>"><?php echo $user['alias'] ?></a></h3>
-                <p><?php echo $user['id'] ?></p>
-            </article>
-            <?php
+
+                <article>
+                    <img src="user.jpg" alt="blason" />
+                    <h3><a href="usersPosts.php?user_id=<?php echo $user['id'] ?>">
+                            <?php echo $user['alias'] ?>
+                        </a></h3>
+                    <p>
+                        <?php echo $user['id'] ?>
+                    </p>
+                </article>
+                <?php
             }
             ;
             // et de pas oublier de fermer ici vote while

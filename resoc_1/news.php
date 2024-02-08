@@ -113,7 +113,9 @@
                             <?php echo $post['created'] ?>
                         </time>
                     </h3>
-                    <address><a href="wall.php?user_id=<?php echo $post['user_id'] ?>"><?php echo $post['author_name'] ?></a>
+                    <address><a href="usersPosts.php?user_id=<?php echo $post['user_id'] ?>">
+                            <?php echo $post['author_name'] ?>
+                        </a>
                     </address>
                     <div>
                         <p>
@@ -124,7 +126,7 @@
                         <small>♥
                             <?php echo $post['like_number'] ?>
                         </small>
-                        <?php 
+                        <?php
                         $tags = explode(',', $post['taglist']); // Explode the taglist into an array of tags
                         $tagIDs = explode(',', $post['tag_ids']);
                         $totalTags = count($tags); // Get the total number of tags
@@ -139,7 +141,7 @@
                             }
                         }
                         ?>
-                        
+
                     </footer>
                 </article>
                 <?php
