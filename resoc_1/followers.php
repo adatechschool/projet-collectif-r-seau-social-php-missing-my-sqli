@@ -1,3 +1,7 @@
+<?php
+    include 'header.php';
+?>
+
 <!doctype html>
 <html lang="fr">
 
@@ -9,9 +13,6 @@
 </head>
 
 <body>
-    <?php
-    include 'header.php';
-    ?>
     <div id="wrapper">
         <aside>
             <img src="user.jpg" alt="Portrait de l'utilisatrice" />
@@ -21,7 +22,7 @@
                     suivent les messages de l'utilisatrice
                     n°
                     <?php
-                    echo intval($_GET['user_id']);
+                    echo intval($_SESSION['connected_id'])
                     ?>
                 </p>
 
@@ -30,7 +31,7 @@
         <main class='contacts'>
             <?php
             // Etape 1: récupérer l'id de l'utilisateur
-            include 'user.php';
+            // include 'user.php';
             // Etape 2: se connecter à la base de donnée
             include 'getDataBase.php';
             // Etape 3: récupérer le nom de l'utilisateur

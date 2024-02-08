@@ -64,7 +64,8 @@
                     posts.user_id,
                     users.alias as author_name,  
                     count(likes.id) as like_number,  
-                    GROUP_CONCAT(DISTINCT tags.label) AS taglist 
+                    GROUP_CONCAT(DISTINCT tags.id ORDER BY tags.label ASC) AS tag_ids,
+                    GROUP_CONCAT(DISTINCT tags.label ORDER BY tags.label ASC) AS taglist  
                     FROM posts_tags as filter 
                     JOIN posts ON posts.id=filter.post_id
                     JOIN users ON users.id=posts.user_id
@@ -103,9 +104,21 @@
                         <small>♥
                             <?php echo $post['like_number'] ?>
                         </small>
-                        <a href="">#
-                            <?php echo $post['taglist'] ?>
-                        </a>,
+                        <?php 
+                        $tags = explode(',', $post['taglist']); // Explode the taglist into an array of tags
+                        $tagIDs = explode(',', $post['tag_ids']);
+                        $totalTags = count($tags); // Get the total number of tags
+                        foreach ($tags as $index => $tag) {
+                            // Trim each tag to remove any leading or trailing spaces
+                            $tag = trim($tag);
+                            // Display each tag preceded by #
+                            echo '<a href="tags.php?tag_id=' . $tagIDs[$index] . '">#' . $tag . '</a>';
+                            // Append a comma if it's not the last tag
+                            if ($index < $totalTags - 1) {
+                                echo ', ';
+                            }
+                        }
+                        ?>
 
                     </footer>
                 </article>

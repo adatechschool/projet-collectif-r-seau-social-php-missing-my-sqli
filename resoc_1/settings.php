@@ -1,3 +1,7 @@
+<?php
+    include 'header.php';
+?>
+
 <!doctype html>
 <html lang="fr">
 
@@ -9,9 +13,7 @@
 </head>
 
 <body>
-    <?php
-    include 'header.php';
-    ?>
+
     <div id="wrapper" class='profile'>
 
 
@@ -21,7 +23,7 @@
                 <h3>Présentation</h3>
                 <p>Sur cette page vous trouverez les informations de l'utilisatrice
                     n°
-                    <?php echo intval($_GET['user_id']) ?>
+                    <?php echo intval($_SESSION['connected_id']) ?>
                 </p>
 
             </section>
@@ -35,7 +37,7 @@
              * Documentation : https://www.php.net/manual/fr/reserved.variables.get.php
              * ... mais en résumé c'est une manière de passer des informations à la page en ajoutant des choses dans l'url
              */
-            include 'user.php';
+            // include 'user.php';
 
             /**
              * Etape 2: se connecter à la base de donnée
@@ -45,6 +47,8 @@
             /**
              * Etape 3: récupérer le nom de l'utilisateur
              */
+            // $userId = $_SESSION['connected_id'];
+
             $laQuestionEnSql = "
                     SELECT users.*, 
                     count(DISTINCT posts.id) as totalpost, 

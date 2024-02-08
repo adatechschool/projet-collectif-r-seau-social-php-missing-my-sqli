@@ -1,3 +1,7 @@
+<?php
+    include 'header.php';
+?>
+
 <!doctype html>
 <html lang="fr">
 
@@ -9,9 +13,7 @@
 </head>
 
 <body>
-    <?php
-    include 'header.php';
-    ?>
+    
     <div id="wrapper">
         <?php
         /**
@@ -21,21 +23,16 @@
          * Documentation : https://www.php.net/manual/fr/reserved.variables.get.php
          * ... mais en résumé c'est une manière de passer des informations à la page en ajoutant des choses dans l'url
          */
-        if (isset($_COOKIE['activeUser'])) {
-            $userId = $_COOKIE['activeUser'];
-        } else {
-            // If neither session nor cookie contains user ID, redirect to login page
-            header("Location: login.php");
-            exit();
-        }
 
-        include 'user.php';
+        // include 'user.php';
         ?>
         <?php
         /**
          * Etape 2: se connecter à la base de donnée
          */
         include 'getDataBase.php';
+
+        
         ?>
 
         <aside>
