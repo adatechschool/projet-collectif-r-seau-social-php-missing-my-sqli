@@ -54,9 +54,48 @@ include 'user.php';
                     (n°
                     <?php echo $userId ?>)
                 </p>
+                <input type="submit" name="Suivre" value="Suivre">
+                <?php
 
-                <button type="button" onClick="
-                ">Suivre</button>
+                function boutonSuivre()
+                {
+
+                    if (!isset($_SESSION['connected_id'])) {
+                        header('Location: login.php');
+                        exit;
+                    } else {
+
+                        $followed_user_id = $_POST['user_id'];
+                        $following_user_id = $_SESSION['connected_id'];
+
+                        $lInstructionSql = "INSERT INTO followers "
+                            . "(id, followed_user_id, following_user_id) "
+                            . "VALUES (NULL, "
+                            . $followed_user_id . ", "
+                            . "'" . $following_user_id . "', "
+                            . "NOW());"
+                        ;
+                        echo $lInstructionSql;
+                    }
+                }
+
+                if (isset($_POST['submit'])) {
+                    echo "<p>Première instruction PHP avec echo</p>";
+                    // boutonSuivre();
+                }
+
+                ?>
+                <form action="usersPosts.php" method="post">
+                    <input type="submit" name="Test" value="Suivre">
+                </form>
+                <?php
+                if (isset($_POST['submit'])) {
+                    echo "<p>Première instruction PHP avec echo</p>";
+                }
+
+                ?>
+
+
             </section>
         </aside>
         <main>
