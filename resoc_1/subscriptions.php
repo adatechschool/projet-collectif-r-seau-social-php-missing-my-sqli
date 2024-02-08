@@ -1,5 +1,6 @@
 <?php
     include 'header.php';
+    include 'checkConnection.php';
 ?>
 
 <!doctype html>
