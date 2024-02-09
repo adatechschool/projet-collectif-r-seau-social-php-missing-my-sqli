@@ -1,6 +1,6 @@
 # To do
 
-- [ ] Boutone suivre
-  - [ ] suiver et désuivre
+- [x] Boutone suivre
+  - [x] suiver et désuivre
 - [ ] Boutons like
   - [ ] Aimer et ensuite désaimer
