@@ -54,46 +54,116 @@ include 'user.php';
                     (n°
                     <?php echo $userId ?>)
                 </p>
-                <input type="submit" name="Suivre" value="Suivre">
+                <!-- <input type="submit" name="Suivre" value="Suivre"> -->
                 <?php
 
-                function boutonSuivre()
-                {
+                // function boutonSuivre()
+                // {
 
+                //     if (!isset($_SESSION['connected_id'])) {
+                //         header('Location: login.php');
+                //         exit;
+                //     } else {
+
+                //         $followed_user_id = $_POST['user_id'];
+                //         $following_user_id = $_SESSION['connected_id'];
+
+                //         $lInstructionSql = "INSERT INTO followers "
+                //             . "(id, followed_user_id, following_user_id) "
+                //             . "VALUES (NULL, "
+                //             . $followed_user_id . ", "
+                //             . "'" . $following_user_id . "', "
+                //             . "NOW());"
+                //         ;
+                //         echo $lInstructionSql;
+                //     }
+                // }
+
+                // if (isset($_POST['submit'])) {
+                //     echo "<p>Première instruction PHP avec echo</p>";
+                //     // boutonSuivre();
+                // }
+
+                ?>
+                <!-- <form action="usersPosts.php" method="post">
+                    <input type="submit" name="Test" value="Suivre">
+                </form> -->
+                <?php
+                // if (isset($_POST['submit'])) {
+                //     echo "<p>Première instruction PHP avec echo</p>";
+                // }
+
+                ?>
+
+                <!-- <form method="post" action=""> -->
+                    <!-- <input type="hidden" name="user_id" value="SESSION CONNECTED ID WAS HERE - DON'T KNOW WHY"> -->
+                    <!-- <input type="submit" name="submit" value="Suivre"> -->
+                <!-- </form> -->
+
+                <?php
+                // if (isset($_POST['submit'])) {
+                //     if (!isset($_SESSION['connected_id'])) {
+                //         header('Location: login.php');
+                //         exit;
+                //     } else {
+                //         echo "<p>Success</p>";
+                //         $followed_user_id = $_GET['user_id'];
+                //         $following_user_id = $_SESSION['connected_id'];
+                //         $lInstructionSql = "INSERT INTO followers "
+                //         . "(id, followed_user_id, following_user_id) "
+                //         . "VALUES (NULL, "
+                //         . $followed_user_id . ", "
+                //         . $following_user_id . ");";
+                //         ;
+                //         echo $lInstructionSql;
+                //         $mysqli->query($lInstructionSql);
+                //     }
+                // }
+                ?>
+
+                <form method="post" action="">
+                    <?php
+                    // Check if the user is following
+                    $followed_user_id = $_GET['user_id'];
+                    $following_user_id = $_SESSION['connected_id'];
+                    $checkFollowQuery = "SELECT COUNT(*) as count FROM followers WHERE followed_user_id = $followed_user_id AND following_user_id = $following_user_id";
+                    $result = $mysqli->query($checkFollowQuery);
+                    $row = $result->fetch_assoc();
+                    $isFollowing = ($row['count'] > 0);
+
+                    // Set button label based on follow status
+                    $buttonLabel = ($isFollowing) ? "Désabonnement" : "Suivre";
+                    ?>
+                    <input type="hidden" name="user_id" value="<?php echo $followed_user_id; ?>">
+                    <input type="submit" name="submit" value="<?php echo $buttonLabel; ?>">
+                </form>
+
+                <?php
+                if (isset($_POST['submit'])) {
                     if (!isset($_SESSION['connected_id'])) {
                         header('Location: login.php');
                         exit;
                     } else {
-
+                        echo "<p>Success</p>";
                         $followed_user_id = $_POST['user_id'];
                         $following_user_id = $_SESSION['connected_id'];
-
-                        $lInstructionSql = "INSERT INTO followers "
-                            . "(id, followed_user_id, following_user_id) "
-                            . "VALUES (NULL, "
-                            . $followed_user_id . ", "
-                            . "'" . $following_user_id . "', "
-                            . "NOW());"
-                        ;
-                        echo $lInstructionSql;
+                        
+                        // If user is following, unfollow them; otherwise, follow them
+                        if ($isFollowing) {
+                            // Unfollow
+                            $deleteFollowQuery = "DELETE FROM followers WHERE followed_user_id = $followed_user_id AND following_user_id = $following_user_id";
+                            $mysqli->query($deleteFollowQuery);
+                        } else {
+                            // Follow
+                            $insertFollowQuery = "INSERT INTO followers (id, followed_user_id, following_user_id) VALUES (NULL, $followed_user_id, $following_user_id)";
+                            $mysqli->query($insertFollowQuery);
+                        }
+                        header("Location: usersPosts.php?user_id=$followed_user_id");
+                        exit;
                     }
                 }
-
-                if (isset($_POST['submit'])) {
-                    echo "<p>Première instruction PHP avec echo</p>";
-                    // boutonSuivre();
-                }
-
                 ?>
-                <form action="usersPosts.php" method="post">
-                    <input type="submit" name="Test" value="Suivre">
-                </form>
-                <?php
-                if (isset($_POST['submit'])) {
-                    echo "<p>Première instruction PHP avec echo</p>";
-                }
 
-                ?>
 
 
             </section>
