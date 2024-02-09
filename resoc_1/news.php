@@ -125,6 +125,7 @@
                     <footer>
                         <small>♥
                             <?php echo $post['like_number'] ?>
+                            <!-- ADD LIKE BUTTON HERE -->
                         </small>
                         <?php
                         $tags = explode(',', $post['taglist']); // Explode the taglist into an array of tags
