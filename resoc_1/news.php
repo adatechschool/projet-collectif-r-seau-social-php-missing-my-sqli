@@ -22,36 +22,7 @@
             </section>
         </aside>
         <main>
-            <!-- L'article qui suit est un exemple pour la présentation et 
-                  @todo: doit etre retiré -->
-            <!-- <article>
-                <h3>
-                    <time datetime='2020-02-01 11:12:13'>31 février 2010 à 11h12</time>
-                </h3>
-                <address>par AreTirer</address>
-                <div>
-                    <p>Ceci est un paragraphe</p>
-                    <p>Ceci est un autre paragraphe</p>
-                    <p>... de toutes manières il faut supprimer cet
-                        article et le remplacer par des informations en
-                        provenance de la base de donnée (voir ci-dessous)</p>
-                </div>
-                <footer>
-                    <small>♥1012 </small>
-                    <a href="">#lorem</a>,
-                    <a href="">#piscitur</a>,
-                </footer>
-            </article> -->
-
             <?php
-            /*
-              // C'est ici que le travail PHP commence
-              // Votre mission si vous l'acceptez est de chercher dans la base
-              // de données la liste des 5 derniers messsages (posts) et
-              // de l'afficher
-              // Documentation : les exemples https://www.php.net/manual/fr/mysqli.query.php
-              // plus généralement : https://www.php.net/manual/fr/mysqli.query.php
-             */
 
             // Etape 1: Ouvrir une connexion avec la base de donnée.
             
@@ -126,6 +97,7 @@
                         <small>♥
                             <?php echo $post['like_number'] ?>
                             <!-- ADD LIKE BUTTON HERE -->
+                            <?php include 'likeButton.php' ?>
                         </small>
                         <?php
                         $tags = explode(',', $post['taglist']); // Explode the taglist into an array of tags
