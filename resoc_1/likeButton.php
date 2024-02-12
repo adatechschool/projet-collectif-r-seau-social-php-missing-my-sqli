@@ -19,13 +19,13 @@ include 'getDataBase.php';
             $liked_post_id = $postID;
             $current_user_id = $_SESSION['connected_id'];
             $check_like_query = "SELECT COUNT(*) as count FROM likes WHERE post_id = $liked_post_id AND user_id = $current_user_id";
-            // echo $liked_post_id;
+            // $check_like_query = "SELECT COUNT(*) as count FROM likes WHERE post_id = 12 AND user_id = $current_user_id";
+            echo $liked_post_id;
             // echo $current_user_id;
             // echo $check_like_query;
             $result = $mysqli->query($check_like_query);
             // echo $result;
-            // $row = $result->fetch_assoc();
-            $row = mysqli_fetch_row($result);
+            $row = $result->fetch_assoc();
             // echo $row;
             $isLiked = ($row['count'] > 0);
             echo $isLiked;
@@ -36,7 +36,7 @@ include 'getDataBase.php';
 
             // Display the follow/unfollow button
             ?>
-            <input type="submit" name="submit" value="<?php echo $buttonLabel; ?>">
+            <input type="submit" name="submit" id="<?php $liked_post_id ?>" value="<?php echo $liked_post_id, $buttonLabel; ?>">
         <?php } ?>
     </form>
 </body>
@@ -51,11 +51,14 @@ if (isset($_POST['submit'])) {
     } else {
         // If user is following, unfollow them; otherwise, follow them
         if ($isLiked) {
-            $deleteLikeQuery = "DELETE FROM likes WHERE likes_post_id = $liked_post_id AND likes_user_id = $current_user_id";
+            $deleteLikeQuery = "DELETE FROM likes WHERE post_id = $liked_post_id AND user_id = $current_user_id";
             $mysqli->query($deleteLikeQuery);
+            echo $deleteLikeQuery;
         } else {
-            $insertLikeQuery = "INSERT INTO likes (id, likes_user_id, likes_post_id) VALUES (NULL, $current_user_id, $liked_post_id)";
+            $insertLikeQuery = "INSERT INTO likes (id, user_id, post_id) VALUES (NULL, $current_user_id, $liked_post_id)";
+            // $insertLikeQuery = "INSERT INTO likes (id, user_id, post_id) VALUES (NULL, $current_user_id, 9)";
             $mysqli->query($insertLikeQuery);
+            echo $insertLikeQuery;
         }
         header("Location: " . $_SERVER['REQUEST_URI']);
         exit;
