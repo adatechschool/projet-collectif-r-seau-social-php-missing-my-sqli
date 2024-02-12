@@ -67,12 +67,17 @@ include 'user.php';
                         $followed_user_id = $_GET['user_id'];
                         $following_user_id = $_SESSION['connected_id'];
                         $checkFollowQuery = "SELECT COUNT(*) as count FROM followers WHERE followed_user_id = $followed_user_id AND following_user_id = $following_user_id";
+                        // echo $checkFollowQuery;
                         $result = $mysqli->query($checkFollowQuery);
+                        // echo $result;
                         $row = $result->fetch_assoc();
+                        // echo $row;
                         $isFollowing = ($row['count'] > 0);
+                        echo $isFollowing;
 
                         // Set button label based on follow status
                         $buttonLabel = ($isFollowing) ? "Désabonnement" : "Suivre";
+                        echo $buttonLabel;
 
                         // Display the follow/unfollow button
                         ?>
