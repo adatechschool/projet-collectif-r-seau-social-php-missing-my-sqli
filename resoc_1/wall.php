@@ -91,10 +91,10 @@ include 'checkConnection.php';
                     // on ne fait ce qui suit que si un formulaire a été soumis.
                     // Etape 2: récupérer ce qu'il y a dans le formulaire @todo: c'est là que votre travaille se situe
                     // observez le résultat de cette ligne de débug (vous l'effacerez ensuite)
-                    // echo "<pre>" . print_r($_POST, 1) . "</pre>";
+                    echo "<pre>" . print_r($_POST, 1) . "</pre>";
                     // et complétez le code ci dessous en remplaçant les ???
                     $authorId = $_SESSION['connected_id'];
-                    $postContent = $_POST['message'];
+                  
 
 
                     //Etape 3 : Petite sécurité
@@ -102,6 +102,21 @@ include 'checkConnection.php';
                     $authorId = intval($mysqli->real_escape_string($authorId));
                     $postContent = $mysqli->real_escape_string($postContent);
                     //Etape 4 : construction de la requete
+
+                    $tagLabel = $_POST['elements'];
+                    $sql = "SELECT id FROM tags WHERE label = '$tagLabel'";
+                    $resultat = $mysqli->query($sql);
+                    $tag = $resultat->fetch_assoc();
+                    $tagId = $tag['id'];
+
+                    echo "<pre>" . print_r($tag) . "</pre>";
+                    
+                    $postContent = $_POST['message'];
+                    $sql = "SELECT id FROM posts WHERE content = '$postContent'";
+                    $resultatpost = $mysqli->query($sql);
+                    $post = $resultatpost->fetch_assoc();
+                    $postId = $post['id'];
+
                     $lInstructionSql = "INSERT INTO posts "
                         . "(id, user_id, content, created) "
                         . "VALUES (NULL, "
@@ -119,20 +134,48 @@ include 'checkConnection.php';
                     //     echo "Message posté en tant que :" . $listAuteurs[$authorId];
                     // }
                 }
+               
+                // $insertposttag = "INSERT INTO posts_tags (id, post_id, tag_id) VALUES (NULL, $postId, $tagId)";
+                // $mysqli->query($insertposttag);
+
+                $lInstructionSqlpost = "INSERT INTO posts_tags "
+                . "(id, post_id, tag_id) "
+                . "VALUES (NULL, "
+                .  $postId . ", "
+                .  $tagId . ")";
+                $okpost = $mysqli->query($lInstructionSqlpost);
+                if (!$okpost) {
+            echo "Impossible d'ajouter le tag au post: " . $mysqli->error;
+                }
+
                 ?>
+
+
+
+<!-- envoi du message -->
                 <form action="wall.php" method="post">
                     <input type='hidden' name='???' value='achanger'>
                     <dl>
-                        <!-- <dt><label for='auteur'>Auteur</label></dt>
-                        <dd><select name='auteur'> -->
+                        
+                         <label for="elements">Sélectionnez un mot-clé :</label>
+                    <select name="elements" id="elements">
 
-                        <!-- foreach ($listAuteurs as $id => $alias)
-                                    echo "<option value='$id'>$alias</option>";
-                                 -->
+        <?php
+            
+            $sql = "SELECT * FROM tags  ";    
+            $resultat = $mysqli->query($sql);        
+            while ($tag = $resultat->fetch_assoc()) {
+                echo "<option value='" . $tag['label']  . "'>" . $tag['label']  . "</option>";
+            }
+       ?>
+    </select>
+                                
                         </select></dd>
                         <dt><label for='message'>Message</label></dt>
                         <dd><textarea name='message'></textarea></dd>
-                    </dl>
+                      
+  
+    
                     <input type='submit'>
                 </form>
             </article>
