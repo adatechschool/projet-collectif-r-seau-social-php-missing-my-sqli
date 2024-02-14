@@ -91,12 +91,12 @@ include 'checkConnection.php';
                     // on ne fait ce qui suit que si un formulaire a été soumis.
                     // Etape 2: récupérer ce qu'il y a dans le formulaire @todo: c'est là que votre travaille se situe
                     // observez le résultat de cette ligne de débug (vous l'effacerez ensuite)
-                    echo "<pre>" . print_r($_POST, 1) . "</pre>";
+                    // echo "<pre>" . print_r($_POST, 1) . "</pre>";
                     // et complétez le code ci dessous en remplaçant les ???
                     $authorId = $_SESSION['connected_id'];
                   
 
-
+                    $postContent = $_POST['message'];
                     //Etape 3 : Petite sécurité
                     // pour éviter les injection sql : https://www.w3schools.com/sql/sql_injection.asp
                     $authorId = intval($mysqli->real_escape_string($authorId));
@@ -109,13 +109,8 @@ include 'checkConnection.php';
                     $tag = $resultat->fetch_assoc();
                     $tagId = $tag['id'];
 
-                    echo "<pre>" . print_r($tag) . "</pre>";
                     
-                    $postContent = $_POST['message'];
-                    $sql = "SELECT id FROM posts WHERE content = '$postContent'";
-                    $resultatpost = $mysqli->query($sql);
-                    $post = $resultatpost->fetch_assoc();
-                    $postId = $post['id'];
+                    echo "<pre>" . print_r($resultatpost) . "</pre>";
 
                     $lInstructionSql = "INSERT INTO posts "
                         . "(id, user_id, content, created) "
@@ -124,29 +119,31 @@ include 'checkConnection.php';
                         . "'" . $postContent . "', "
                         . "NOW());"
                     ;
-                    // echo $lInstructionSql;
+                    
                     // Etape 5 : execution
                     $ok = $mysqli->query($lInstructionSql);
                     if (!$ok) {
                         echo "Impossible d'ajouter le message: " . $mysqli->error;
                     }
-                    //  else {
-                    //     echo "Message posté en tant que :" . $listAuteurs[$authorId];
-                    // }
+        
                 }
-               
-                // $insertposttag = "INSERT INTO posts_tags (id, post_id, tag_id) VALUES (NULL, $postId, $tagId)";
-                // $mysqli->query($insertposttag);
-
-                $lInstructionSqlpost = "INSERT INTO posts_tags "
+    
+                $sql = "SELECT posts.id FROM posts WHERE content = '$postContent'";
+                $resultatpost = $mysqli->query($sql);
+                $post = $resultatpost->fetch_assoc();
+                $postId = $post['id'];
+                            
+                
+                $lInstructionSqlposttag ="INSERT INTO posts_tags "
                 . "(id, post_id, tag_id) "
                 . "VALUES (NULL, "
                 .  $postId . ", "
-                .  $tagId . ")";
-                $okpost = $mysqli->query($lInstructionSqlpost);
-                if (!$okpost) {
-            echo "Impossible d'ajouter le tag au post: " . $mysqli->error;
-                }
+                . "'" . $tagId . "')"
+                ;
+                $okpost = $mysqli->query($lInstructionSqlposttag);
+            //     if (!$okpost) {
+            // echo "Impossible d'ajouter le tag au post: " . $mysqli->error;
+            //     }
 
                 ?>
 
