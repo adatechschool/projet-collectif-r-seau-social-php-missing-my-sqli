@@ -24,10 +24,10 @@
         <main>
             <?php
 
-            // Se connecte à la database
+            // Se connecte avec la base de données
             
             include 'getDataBase.php';
-            //verification
+            // Vérifie
             if ($mysqli->connect_errno) {
                 echo "<article>";
                 echo ("Échec de la connexion : " . $mysqli->connect_error);
@@ -36,7 +36,7 @@
                 exit();
             }
 
-            // Crée la requête de récupération des infos des articles dans la database
+            // Interroge la base de données
             $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
@@ -56,7 +56,7 @@
                     LIMIT 5
                     ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
-            // Vérifie  la requête
+            // Vérifie
             if (!$lesInformations) {
                 echo "<article>";
                 echo ("Échec de la requete : " . $mysqli->error);
@@ -64,8 +64,9 @@
                 exit();
             }
 
-            // Crée une boucle d'affichage des articles.
+            // Parcourt ces données et les range dans le html
             
+
 
 
             while ($post = $lesInformations->fetch_assoc()) {
@@ -93,53 +94,21 @@
                         <small>♥
                             <?php echo $post['like_number'] ?>
                             <!-- Ajoute le bouton like -->
-
-                            <body>
-                                <form method="post" action="">
-                                    <?php
-                                    // Vérifie si l'utilisatrice est connectée
-                                    if (!isset($_SESSION['connected_id'])) {
-                                        ?>
-                                        <!-- Affiche le bouton si l'utilisatrice n'est pas connectée -->
-                                        <input type="submit" name="submit" value="Like">
-                                    <?php } else {
-                                        // Vérifie si l'utilisatrice a aimé le post
-                                        $liked_post_id = $post['id'];
-                                        $current_user_id = $_SESSION['connected_id'];
-                                        $check_like_query = "SELECT COUNT(*) as count FROM likes WHERE post_id = $liked_post_id AND user_id = $current_user_id";
-
-
-
-                                        $result = $mysqli->query($check_like_query);
-
-                                        $row = $result->fetch_assoc();
-
-                                        $isLiked = ($row['count'] > 0);
-
-
-                                        // Affiche le nom du bouton en fonction du statut aimé ou non
-                                        $buttonLabel = ($isLiked) ? "Dislike" : "Like";
-
-
-                                        // Affiche le bouton aimé ou non
-                                        ?>
-                                        <input type="submit" name="submit" id="<?php $liked_post_id ?>"
-                                            value="<?php echo $liked_post_id, $buttonLabel; ?>">
-                                    <?php } ?>
-                                </form>
-                            </body>
-
-
+                            <?php include 'likeButton.php';
+                            ?>
 
                         </small>
                         <!-- Ajoute les tags -->
                         <?php
-                        $tags = explode(',', $post['taglist']);
+                        $tags = explode(',', $post['taglist']); // Sépare les tags dans un tableau
                         $tagIDs = explode(',', $post['tag_ids']);
-                        $totalTags = count($tags);
+                        $totalTags = count($tags); // Récupère le nombre total de tags
                         foreach ($tags as $index => $tag) {
+                            // Remets en forme chaque tag
                             $tag = trim($tag);
+                            // Affiche chaque tag précédé d'un #
                             echo '<a href="tags.php?tag_id=' . $tagIDs[$index] . '">#' . $tag . '</a>';
+                            // Ajoute une virgule si ce n'est pas le dernier tag
                             if ($index < $totalTags - 1) {
                                 echo ', ';
                             }
@@ -149,28 +118,6 @@
                     </footer>
                 </article>
                 <?php
-            }
-
-            // Vérifie si l'utilisatrice a cliqué sur le bouton en étant hors connexion
-            if (isset($_POST['submit'])) {
-                if (!isset($_SESSION['connected_id'])) {
-                    header('Location: login.php');
-                    exit;
-                    // Exécute code ci-dessous si connectée
-                } else {
-                    // Aime ou n'aime plus le message en fonction de son statut actuel
-                    if ($isLiked) {
-                        $deleteLikeQuery = "DELETE FROM likes WHERE post_id = $liked_post_id AND user_id = $current_user_id";
-                        $mysqli->query($deleteLikeQuery);
-
-                    } else {
-                        $insertLikeQuery = "INSERT INTO likes (id, user_id, post_id) VALUES (NULL, $current_user_id, $liked_post_id)";
-                        $mysqli->query($insertLikeQuery);
-
-                    }
-                    header("Location: " . $_SERVER['REQUEST_URI']);
-                    exit;
-                }
             }
 
             ?>

@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 include 'getDataBase.php';
 ?>
 
@@ -9,26 +9,26 @@ include 'getDataBase.php';
 <body>
     <form method="post" action="">
         <?php
-        // Vérifie si l'utilisatrice n'est pas connectée
+        // Vérifie que l'utilisatrice n'est pas connectée
         if (!isset($_SESSION['connected_id'])) {
             ?>
-            <!-- Affiche le menu de connexion si l'utilisatrice n'est pas connectée -->
-            <input type="submit" name="submit" value="Like">
+            <!-- Affiche le bouton pour les utilisatrices hors connexion -->
+            <input type="submit" name="" value="♥">
+            <input type="hidden" name="id_post" value="<?php echo $liked_post_id; ?>">
+            <!-- <input type="submit" name="submit" value="Like"> -->
         <?php } else {
-            // Vérifie si l'utilisatrice a aimé le post
-            $liked_post_id = $post['id'];
+            // Vérifie si l'utilisatrice a aimé le post 
+            $liked_post_id = $postID;
             $current_user_id = $_SESSION['connected_id'];
             $check_like_query = "SELECT COUNT(*) as count FROM likes WHERE post_id = $liked_post_id AND user_id = $current_user_id";
             $result = $mysqli->query($check_like_query);
             $row = $result->fetch_assoc();
             $isLiked = ($row['count'] > 0);
 
-
-            // Ajoute le nom du bouton en fonction du statut : aimé ou non.
+            // Définit le bouton en fonction de son statut
             $buttonLabel = ($isLiked) ? "Dislike" : "Like";
 
-
-            // Affiche le bouton ou non 
+            // Affiche le bouton Aimer/Ne pas aimer
             ?>
             <input type="submit" name="" value="♥">
             <input type="hidden" name="id_post" value="<?php echo $liked_post_id; ?>">
@@ -36,22 +36,21 @@ include 'getDataBase.php';
     </form>
 </body>
 
+
 <?php
+
 $id = $_POST["id_post"];
 
-
-echo "<pre>" . print_r($_POST) . "<pre>";
-// Vérifie si on a cliqué sur le bouton hors connexion
+// Vérifie si on a cliqué hors connexion
 if (isset($_POST['id_post'])) {
 
     if ($id == $liked_post_id) {
 
-
-        // Renvoie vers la page de connexion si non connectée
+        // Envoie vers la page de connexion si on clique hors connexion
         if (!isset($_SESSION['connected_id'])) {
             header('Location: login.php');
             exit;
-            // Envoie la requête si connecté
+            // Exécute le code après avoir cliqué si on est connecté
         } else {
             if ($isLiked) {
                 $deleteLikeQuery = "DELETE FROM likes WHERE post_id = $id AND user_id = $current_user_id";

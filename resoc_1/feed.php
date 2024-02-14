@@ -18,7 +18,10 @@ include 'checkConnection.php';
     <div id="wrapper">
 
         <?php
-        //    Connexion à la database
+
+        ?>
+        <?php
+
         include 'getDataBase.php';
         ?>
 
@@ -50,6 +53,7 @@ include 'checkConnection.php';
                     SELECT posts.content,
                     posts.created,
                     posts.user_id,
+                    posts.id,
                     users.alias as author_name,  
                     count(likes.id) as like_number,  
                     GROUP_CONCAT(DISTINCT tags.id ORDER BY tags.label ASC) AS tag_ids,
@@ -71,7 +75,12 @@ include 'checkConnection.php';
 
             while ($post = $lesInformations->fetch_assoc()) {
 
-                //    Affichage des messages des abonnements
+                $postID = $post['id'];
+
+                /**
+                 * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
+                 * A vous de retrouver comment faire la boucle while de parcours...
+                 */
                 ?>
                 <article>
                     <h3>
@@ -89,11 +98,11 @@ include 'checkConnection.php';
                     </div>
                     <footer>
                         <small>♥
-                            <?php echo $post['like_number'] ?>
+                            <?php echo $post['like_number'];
+                            include 'likeButton.php' ?>
                         </small>
                         <?php
-                        // Affichage des tags
-                        $tags = explode(',', $post['taglist']);
+                        $tags = explode(',', $post['taglist']); // Explode the taglist into an array of tags
                         $tagIDs = explode(',', $post['tag_ids']);
                         $totalTags = count($tags);
                         foreach ($tags as $index => $tag) {

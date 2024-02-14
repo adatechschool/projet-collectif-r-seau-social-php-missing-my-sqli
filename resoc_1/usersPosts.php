@@ -55,7 +55,7 @@ include 'user.php';
                     // Vérifie si l'utilisatrice n'est pas connectée
                     if (!isset($_SESSION['connected_id'])) {
                         ?>
-                        <!-- Affiche le bouton si l'utilisatrice est hors connexion -->
+                        <!-- Display button for not logged in user -->
                         <input type="submit" name="submit" value="Suivre">
                     <?php } else {
                         // Vérifie si l'utilisatrice est abonnée
@@ -87,7 +87,7 @@ include 'user.php';
                     if (!isset($_SESSION['connected_id'])) {
                         header('Location: login.php');
                         exit;
-                        // Exécute le code ci-dessous si l'utilisatrice a cliqué en étant connectée
+                    // If the button is clicked when logged in
                     } else {
                         // Si l'utilisatrice est abonnée : se désabonne, si elle n'est pas abonnée : s'abonne
                         if ($isFollowing) {
