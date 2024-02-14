@@ -153,6 +153,7 @@ include 'checkConnection.php';
             $laQuestionEnSql = "
                     SELECT posts.content, 
                     posts.created, 
+                    posts.id AS post_id,
                     users.alias as author_name, 
                     COUNT(likes.id) as like_number, 
                     GROUP_CONCAT(DISTINCT tags.id ORDER BY tags.label ASC) AS tag_ids,
@@ -206,7 +207,10 @@ include 'checkConnection.php';
                             }
                         }
                         ?>
-
+                        <form method="post" action="deletePost.php">
+                            <input type="submit" value="Supprimer">
+                            <input type="hidden" name="post_id" value="<?php echo $post['post_id']; ?>">
+                        </form>
                     </footer>
                 </article>
             <?php } ?>
