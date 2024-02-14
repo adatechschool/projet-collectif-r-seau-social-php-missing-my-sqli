@@ -24,7 +24,7 @@
         <main>
             <?php
 
-            // Etape 1: Ouvrir une connexion avec la base de donnée.
+            // Se connecte à la database
             
             include 'getDataBase.php';
             //verification
@@ -36,9 +36,7 @@
                 exit();
             }
 
-            // Etape 2: Poser une question à la base de donnée et récupérer ses informations
-            // cette requete vous est donnée, elle est complexe mais correcte, 
-            // si vous ne la comprenez pas c'est normal, passez, on y reviendra
+            // Crée la requête de récupération des infos des articles dans la database
             $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
@@ -58,7 +56,7 @@
                     LIMIT 5
                     ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
-            // Vérification
+            // Vérifie  la requête
             if (!$lesInformations) {
                 echo "<article>";
                 echo ("Échec de la requete : " . $mysqli->error);
@@ -66,31 +64,16 @@
                 exit();
             }
 
-            // Etape 3: Parcourir ces données et les ranger bien comme il faut dans du html
-            // NB: à chaque tour du while, la variable post ci dessous reçois les informations du post suivant.
+            // Crée une boucle d'affichage des articles.
             
-            $array_button_post_id = array();
-            // $button_post_id = $array_button_post_id[$];
-            
-            while ($post = $lesInformations->fetch_assoc()) {
-                //la ligne ci-dessous doit etre supprimée mais regardez ce 
-                //qu'elle affiche avant pour comprendre comment sont organisées les information dans votre 
-                //  echo "<pre>" . print_r($post, 1) . "</pre>";
-<<<<<<< HEAD
-                $postID = $post['id'];
-                echo $postID;
 
-=======
-                 $postID = $post['id'];
-                //  echo $postID;
-            
->>>>>>> a940d8f367ffc38c7e554d505f18f115adc8e2eb
-                // @todo : Votre mission c'est de remplacer les AREMPLACER par les bonnes valeurs
-                // ci-dessous par les bonnes valeurs cachées dans la variable $post 
-                // on vous met le pied à l'étrier avec created
-                // 
-                // avec le ? > ci-dessous on sort du mode php et on écrit du html comme on veut... mais en restant dans la boucle
+
+            while ($post = $lesInformations->fetch_assoc()) {
+
+                $postID = $post['id'];
+
                 ?>
+                <!-- Affiche les articles -->
                 <article>
                     <h3>
                         <time>
@@ -109,37 +92,36 @@
                     <footer>
                         <small>♥
                             <?php echo $post['like_number'] ?>
-                            <!-- ADD LIKE BUTTON HERE -->
+                            <!-- Ajoute le bouton like -->
 
                             <body>
                                 <form method="post" action="">
                                     <?php
-                                    // Check if user is not logged in
+                                    // Vérifie si l'utilisatrice est connectée
                                     if (!isset($_SESSION['connected_id'])) {
                                         ?>
-                                        <!-- Display button for not logged in user -->
+                                        <!-- Affiche le bouton si l'utilisatrice n'est pas connectée -->
                                         <input type="submit" name="submit" value="Like">
                                     <?php } else {
-                                        // Check if the user has liked the post
+                                        // Vérifie si l'utilisatrice a aimé le post
                                         $liked_post_id = $post['id'];
                                         $current_user_id = $_SESSION['connected_id'];
                                         $check_like_query = "SELECT COUNT(*) as count FROM likes WHERE post_id = $liked_post_id AND user_id = $current_user_id";
-                                        // $check_like_query = "SELECT COUNT(*) as count FROM likes WHERE post_id = 12 AND user_id = $current_user_id";
-                                        echo $liked_post_id;
-                                        // echo $current_user_id;
-                                        // echo $check_like_query;
+
+
+
                                         $result = $mysqli->query($check_like_query);
-                                        // echo $result;
+
                                         $row = $result->fetch_assoc();
-                                        // echo $row;
+
                                         $isLiked = ($row['count'] > 0);
-                                        echo $isLiked;
 
-                                        // Set button label based on follow status
+
+                                        // Affiche le nom du bouton en fonction du statut aimé ou non
                                         $buttonLabel = ($isLiked) ? "Dislike" : "Like";
-                                        echo $buttonLabel;
 
-                                        // Display the follow/unfollow button
+
+                                        // Affiche le bouton aimé ou non
                                         ?>
                                         <input type="submit" name="submit" id="<?php $liked_post_id ?>"
                                             value="<?php echo $liked_post_id, $buttonLabel; ?>">
@@ -148,21 +130,16 @@
                             </body>
 
 
-                            <!--  include 'likeButton.php'; -->
-                            <?php array_push($array_button_post_id, $postID);
-                            ?>
 
                         </small>
+                        <!-- Ajoute les tags -->
                         <?php
-                        $tags = explode(',', $post['taglist']); // Explode the taglist into an array of tags
+                        $tags = explode(',', $post['taglist']);
                         $tagIDs = explode(',', $post['tag_ids']);
-                        $totalTags = count($tags); // Get the total number of tags
+                        $totalTags = count($tags);
                         foreach ($tags as $index => $tag) {
-                            // Trim each tag to remove any leading or trailing spaces
                             $tag = trim($tag);
-                            // Display each tag preceded by #
                             echo '<a href="tags.php?tag_id=' . $tagIDs[$index] . '">#' . $tag . '</a>';
-                            // Append a comma if it's not the last tag
                             if ($index < $totalTags - 1) {
                                 echo ', ';
                             }
@@ -172,35 +149,30 @@
                     </footer>
                 </article>
                 <?php
-                // avec le <?php ci-dessus on retourne en mode php 
-            } // cette accolade ferme et termine la boucle while ouverte avant.
-            
-            // Check if the button has been clicked when not logged in
+            }
+
+            // Vérifie si l'utilisatrice a cliqué sur le bouton en étant hors connexion
             if (isset($_POST['submit'])) {
                 if (!isset($_SESSION['connected_id'])) {
                     header('Location: login.php');
                     exit;
-                    // If the button is clicked when logged in
+                    // Exécute code ci-dessous si connectée
                 } else {
-                    // $liked_post_id = $post['id'];
-                    // $current_user_id = $_SESSION['connected_id'];
-                    // If user is following, unfollow them; otherwise, follow them
+                    // Aime ou n'aime plus le message en fonction de son statut actuel
                     if ($isLiked) {
                         $deleteLikeQuery = "DELETE FROM likes WHERE post_id = $liked_post_id AND user_id = $current_user_id";
                         $mysqli->query($deleteLikeQuery);
-                        echo $deleteLikeQuery;
+
                     } else {
                         $insertLikeQuery = "INSERT INTO likes (id, user_id, post_id) VALUES (NULL, $current_user_id, $liked_post_id)";
-                        // $insertLikeQuery = "INSERT INTO likes (id, user_id, post_id) VALUES (NULL, $current_user_id, 9)";
                         $mysqli->query($insertLikeQuery);
-                        echo $insertLikeQuery;
+
                     }
                     header("Location: " . $_SERVER['REQUEST_URI']);
                     exit;
                 }
             }
 
-            echo "<pre>" . print_r($array_button_post_id) . "<pre>";
             ?>
 
 

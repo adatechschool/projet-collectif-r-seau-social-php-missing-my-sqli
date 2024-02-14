@@ -1,6 +1,6 @@
 <?php
-    include 'header.php';
-    include 'checkConnection.php';
+include 'header.php';
+include 'checkConnection.php';
 ?>
 
 <!doctype html>
@@ -16,35 +16,21 @@
 <body>
 
     <div id="wrapper">
+
         <?php
-        /**
-         * Cette page est TRES similaire à wall.php. 
-         * Vous avez sensiblement à y faire la meme chose.
-         * Il y a un seul point qui change c'est la requete sql.
-         */
-        /**
-         * Etape 1: Le mur concerne un utilisateur en particulier
-         */
-        // include 'user.php';
-        ?>
-        <?php
-        /**
-         * Etape 2: se connecter à la base de donnée
-         */
+        //    Connexion à la database
         include 'getDataBase.php';
         ?>
 
         <aside>
             <?php
-            /**
-             * Etape 3: récupérer le nom de l'utilisateur
-             */
+            //    Récupération du nom de l'utilisatrice
             $laQuestionEnSql = "SELECT * FROM `users` WHERE id= '$userId' ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
             $user = $lesInformations->fetch_assoc();
-            //@todo: afficher le résultat de la ligne ci dessous, remplacer XXX par l'alias et effacer la ligne ci-dessous
-            //echo "<pre>" . print_r($user, 1) . "</pre>";
+
             ?>
+            <!-- Affichage du nom de l'utilisatrice -->
             <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
                 <h3>Présentation</h3>
@@ -59,9 +45,7 @@
         </aside>
         <main>
             <?php
-            /**
-             * Etape 3: récupérer tous les messages des abonnements
-             */
+            //    Récupération des messages des abonnements
             $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
@@ -87,10 +71,7 @@
 
             while ($post = $lesInformations->fetch_assoc()) {
 
-                /**
-                 * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
-                 * A vous de retrouver comment faire la boucle while de parcours...
-                 */
+                //    Affichage des messages des abonnements
                 ?>
                 <article>
                     <h3>
@@ -99,7 +80,9 @@
                         </time>
                     </h3>
                     <address>
-                    <a href="wall.php?user_id=<?php echo $post['user_id'] ?>"><?php echo $post['author_name'] ?></a>
+                        <a href="wall.php?user_id=<?php echo $post['user_id'] ?>">
+                            <?php echo $post['author_name'] ?>
+                        </a>
                     </address>
                     <div>
                         <?php echo $post['content'] ?>
@@ -108,16 +91,14 @@
                         <small>♥
                             <?php echo $post['like_number'] ?>
                         </small>
-                        <?php 
-                        $tags = explode(',', $post['taglist']); // Explode the taglist into an array of tags
+                        <?php
+                        // Affichage des tags
+                        $tags = explode(',', $post['taglist']);
                         $tagIDs = explode(',', $post['tag_ids']);
-                        $totalTags = count($tags); // Get the total number of tags
+                        $totalTags = count($tags);
                         foreach ($tags as $index => $tag) {
-                            // Trim each tag to remove any leading or trailing spaces
                             $tag = trim($tag);
-                            // Display each tag preceded by #
                             echo '<a href="tags.php?tag_id=' . $tagIDs[$index] . '">#' . $tag . '</a>';
-                            // Append a comma if it's not the last tag
                             if ($index < $totalTags - 1) {
                                 echo ', ';
                             }

@@ -1,10 +1,13 @@
 <?php
+// Création de la session
 session_start();
+
 
 $userId = $_SESSION['connected_id'];
 ?>
 
 <header>
+    <!-- Création du menu -->
     <img src="resoc.jpg" alt="Logo de notre réseau social" />
 
     <nav id="menu">

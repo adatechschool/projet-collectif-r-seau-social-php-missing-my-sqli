@@ -30,10 +30,8 @@ include 'checkConnection.php';
         </aside>
         <main class='contacts'>
             <?php
-            // Etape 1: récupérer l'id de l'utilisateur
-            // Etape 2: se connecter à la base de donnée
             include 'getDataBase.php';
-            // Etape 3: récupérer le nom de l'utilisateur
+            // Récupére le nom de l'utilisateur
             $laQuestionEnSql = "
                     SELECT users.* 
                     FROM followers 
@@ -42,8 +40,7 @@ include 'checkConnection.php';
                     GROUP BY users.id
                     ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
-            // Etape 4: à vous de jouer
-            //@todo: faire la boucle while de parcours des abonnés et mettre les bonnes valeurs ci dessous 
+            // Crée la boucle d'affichage des abonnements
             if (!$lesInformations) {
                 echo ("Échec de la requete : " . $mysqli->error);
             }
@@ -64,7 +61,7 @@ include 'checkConnection.php';
                 <?php
             }
             ;
-            // et de pas oublier de fermer ici vote while
+
             ?>
         </main>
     </div>

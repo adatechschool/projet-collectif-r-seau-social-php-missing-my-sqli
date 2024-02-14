@@ -18,18 +18,14 @@ include 'user.php';
     <div id="wrapper">
         <?php
         /**
-         * Etape 1: Le mur concerne un utilisateur en particulier
-         * La première étape est donc de trouver quel est l'id de l'utilisateur
-         * Celui ci est indiqué en parametre GET de la page sous la forme user_id=...
-         * Documentation : https://www.php.net/manual/fr/reserved.variables.get.php
-         * ... mais en résumé c'est une manière de passer des informations à la page en ajoutant des choses dans l'url
+         * Récupère l'id de l'utilisatrice
          */
 
-        // include 'user.php';
+
         ?>
         <?php
         /**
-         * Etape 2: se connecter à la base de donnée
+         * Se connecte à la base de donnée
          */
         include 'getDataBase.php';
 
@@ -37,16 +33,15 @@ include 'user.php';
         ?>
 
         <aside>
-            <!-- <?php
+            <?php
             /**
-             * Etape 3: récupérer le nom de l'utilisateur
+             * Récupère le nom de l'utilisatrice
              */
             $laQuestionEnSql = "SELECT * FROM posts WHERE id= '$userId' ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
             $user = $lesInformations->fetch_assoc();
-            //@todo: afficher le résultat de la ligne ci dessous, remplacer XXX par l'alias et effacer la ligne ci-dessous
-            //echo "<pre>" . print_r($user, 1) . "</pre>";
-            ?> -->
+            //Affiche le résultat
+            ?>
             <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
                 <h3>Présentation</h3>
@@ -57,29 +52,29 @@ include 'user.php';
 
                 <form method="post" action="">
                     <?php
-                    // Check if user is not logged in
+                    // Vérifie si l'utilisatrice n'est pas connectée
                     if (!isset($_SESSION['connected_id'])) {
-                    ?>
-                    <!-- Display button for not logged in user -->
-                     <input type="submit" name="submit" value="Suivre">
+                        ?>
+                        <!-- Affiche le bouton si l'utilisatrice est hors connexion -->
+                        <input type="submit" name="submit" value="Suivre">
                     <?php } else {
-                        // Check if the user is following
+                        // Vérifie si l'utilisatrice est abonnée
                         $followed_user_id = $_GET['user_id'];
                         $following_user_id = $_SESSION['connected_id'];
                         $checkFollowQuery = "SELECT COUNT(*) as count FROM followers WHERE followed_user_id = $followed_user_id AND following_user_id = $following_user_id";
-                        // echo $checkFollowQuery;
+
                         $result = $mysqli->query($checkFollowQuery);
-                        // echo $result;
+
                         $row = $result->fetch_assoc();
-                        // echo $row;
+
                         $isFollowing = ($row['count'] > 0);
                         echo $isFollowing;
 
-                        // Set button label based on follow status
+                        // Définit le nom du bouton en fonction de son statut
                         $buttonLabel = ($isFollowing) ? "Désabonnement" : "Suivre";
                         echo $buttonLabel;
 
-                        // Display the follow/unfollow button
+                        // Affiche le bouton
                         ?>
                         <input type="hidden" name="user_id" value="<?php echo $followed_user_id; ?>">
                         <input type="submit" name="submit" value="<?php echo $buttonLabel; ?>">
@@ -87,20 +82,20 @@ include 'user.php';
                 </form>
 
                 <?php
-                // Check if the button has been clicked when not logged in
+                // Vérifie si l'utilisatrice a cliqué en étant hors connexion
                 if (isset($_POST['submit'])) {
                     if (!isset($_SESSION['connected_id'])) {
                         header('Location: login.php');
                         exit;
-                    // If the button is clicked when logged in
+                        // Exécute le code ci-dessous si l'utilisatrice a cliqué en étant connectée
                     } else {
-                        // If user is following, unfollow them; otherwise, follow them
+                        // Si l'utilisatrice est abonnée : se désabonne, si elle n'est pas abonnée : s'abonne
                         if ($isFollowing) {
-                            // Unfollow
+                            // Se désabonne
                             $deleteFollowQuery = "DELETE FROM followers WHERE followed_user_id = $followed_user_id AND following_user_id = $following_user_id";
                             $mysqli->query($deleteFollowQuery);
                         } else {
-                            // Follow
+                            // S'abonne
                             $insertFollowQuery = "INSERT INTO followers (id, followed_user_id, following_user_id) VALUES (NULL, $followed_user_id, $following_user_id)";
                             $mysqli->query($insertFollowQuery);
                         }
@@ -119,7 +114,7 @@ include 'user.php';
 
             <?php
             /**
-             * Etape 3: récupérer tous les messages de l'utilisatrice
+             * Récupère tous les messages de l'utilisatrice
              */
 
 
@@ -144,11 +139,9 @@ include 'user.php';
             }
 
             /**
-             * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
+             * Parcourt les messsages et remplit correctement le HTML avec les bonnes valeurs php
              */
             while ($post = $lesInformations->fetch_assoc()) {
-
-                // echo "<pre>" . print_r($post, 1) . "</pre>";
                 ?>
                 <article>
                     <h3>
@@ -168,15 +161,12 @@ include 'user.php';
                         </small>
 
                         <?php
-                        $tags = explode(',', $post['taglist']); // Explode the taglist into an array of tags
+                        $tags = explode(',', $post['taglist']);
                         $tagIDs = explode(',', $post['tag_ids']);
-                        $totalTags = count($tags); // Get the total number of tags
+                        $totalTags = count($tags);
                         foreach ($tags as $index => $tag) {
-                            // Trim each tag to remove any leading or trailing spaces
                             $tag = trim($tag);
-                            // Display each tag preceded by #
                             echo '<a href="tags.php?tag_id=' . $tagIDs[$index] . '">#' . $tag . '</a>';
-                            // Append a comma if it's not the last tag
                             if ($index < $totalTags - 1) {
                                 echo ', ';
                             }
