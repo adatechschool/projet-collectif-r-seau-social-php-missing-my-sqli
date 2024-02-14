@@ -6,31 +6,24 @@ session_start();
 $userId = $_SESSION['connected_id'];
 ?>
 
-<header>
-    <!-- Création du menu -->
-    <img src="resoc.jpg" alt="Logo de notre réseau social" />
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="header.css" />
+</head>
 
-    <nav id="menu">
-        <a href="news.php">Actualités</a>
-        <a href="wall.php">Mur</a>
+<header class="header">
+    <nav class="menu">
+        <a class="navlogo" href="news.php">Émotions</a>
+        <a href="wall.php">Profil</a>
         <a href="feed.php">Flux</a>
-    </nav>
-    <nav id="user">
-        <a href="#">Profil</a>
-        <ul>
-            <li><a href="settings.php">Paramètres</a></li>
-            <li><a href="followers.php">Mes suiveurs</a></li>
-            <li><a href="subscriptions.php">Mes abonnements</a></li>
-            <?php
+        <a href="settings.php">Paramètres</a>
+        <?php
             session_start();
-
             if (isset($_SESSION['connected_id'])) {
-                echo '<li><a href="deconnexion.php">Déconnexion</a></li>';
+                echo '<a href="deconnexion.php">Déconnexion</a>';
             } else {
-                echo '<li><a href="login.php">Connexion</a></li>';
+                echo '<a href="login.php">Connexion</a>';
             }
-            ?>
-        </ul>
-
+        ?>
     </nav>
 </header>

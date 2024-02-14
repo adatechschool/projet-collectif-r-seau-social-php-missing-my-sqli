@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+@font-face {
+    font-family: 'Pangaia-Medium';
+    src: url('../fonts/Pangaia-Medium.otf') format('opentype');
+}
+
+.header {
+    display: flex;
+    padding: 0.9375rem;
+    justify-content: center;
+    align-items: center;
+    gap: 1.875rem;
+    border-radius: 0.625rem;
+    border: 1px solid #E2E1DE;
+    background: linear-gradient(180deg, rgba(248, 240, 251, 0.50) 0%, rgba(223, 219, 254, 0.50) 100%);
+    box-shadow: 0px 5px 8px 0px rgba(0, 0, 0, 0.10);
+    backdrop-filter: blur(6.5px);
+    max-width: fit-content;
+    position: absolute;
+    left: 50%;
+    top: 2rem;
+    transform: translateX(-50%);
+}
+
+.menu {
+    display: flex;
+    flex-wrap: wrap;
+    color: #21201C;
+    justify-content: center;
+    align-items: center;
+    text-align: justify;
+    font-family: "Inter";
+    font-size: 1.3rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.menu a {
+    margin: 0 0.9375rem 0 0.9375rem;
+}
+
+.navlogo {
+    font-family: "Pangaia-Medium", sans-serif;
+    font-size: 1.8rem;
+}

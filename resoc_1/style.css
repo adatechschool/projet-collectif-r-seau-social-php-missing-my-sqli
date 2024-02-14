@@ -4,68 +4,7 @@ body{
 }
 
 a{text-decoration: none; color:black;}
-a:hover{text-decoration: underline;}
-
-body>header{
-    background-color: #fff;
-    display:flex;
-    width:80em;
-    margin:0 auto 2em auto;    
-    padding:0;
-
-}
-body>header img{
-    height:5em;
-}
-body>header #menu {
-    display:flex;
-    width:50%;
-    align-items: stretch;
-    border-left: 1px solid #99b;
-}
-body>header #menu a{
-    flex:1;
-    text-align: center;
-    padding-top:2em;
-    border-right: 1px solid #99b;
-}
-body>header a:hover
-{
-    background-color: #99b;
-}
-body>header ul{list-style: none;}
-body>header #user
-{
-    margin-left: auto;
-    flex:0.2;
-    border-left: 1px solid #99b;
-}
-body>header #user>a{
-    display:block;
-    text-align: center;
-    padding:2em 0;
-    width:100%;
-}
-body>header #user ul{ 
-    display: none;
-    position: absolute;
-    padding:0;
-    margin:0;
-    margin-left:-5em;
-    background-color: #fff;
-    border: 1px solid #99b;
-
-    z-index: 1;
-}
-body>header #user ul li a{
-    display:block;
-    width:10em;
-    padding:1em;
-    border-bottom: 1px solid #99b;
-}
-body>header #user:hover ul{
-    display:block;
-}
+/* a:hover{text-decoration: underline;} */
 
 
 #wrapper{
