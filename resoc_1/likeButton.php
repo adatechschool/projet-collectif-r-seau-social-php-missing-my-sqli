@@ -11,12 +11,12 @@ include 'getDataBase.php';
         <?php
         // Check if user is not logged in
         if (!isset($_SESSION['connected_id'])) {
-        ?>
-        <!-- Display button for not logged in user -->
+            ?>
+            <!-- Display button for not logged in user -->
             <input type="submit" name="submit" value="Like">
         <?php } else {
             // Check if the user has liked the post
-            $liked_post_id = $postID;
+            $liked_post_id = $post['id'];
             $current_user_id = $_SESSION['connected_id'];
             $check_like_query = "SELECT COUNT(*) as count FROM likes WHERE post_id = $liked_post_id AND user_id = $current_user_id";
             // $check_like_query = "SELECT COUNT(*) as count FROM likes WHERE post_id = 12 AND user_id = $current_user_id";
@@ -36,7 +36,8 @@ include 'getDataBase.php';
 
             // Display the follow/unfollow button
             ?>
-            <input type="submit" name="submit" id="<?php $liked_post_id ?>" value="<?php echo $liked_post_id, $buttonLabel; ?>">
+            <input type="submit" name="submit" id="<?php $liked_post_id ?>"
+                value="<?php echo $liked_post_id, $buttonLabel; ?>">
         <?php } ?>
     </form>
 </body>
@@ -47,7 +48,7 @@ if (isset($_POST['submit'])) {
     if (!isset($_SESSION['connected_id'])) {
         header('Location: login.php');
         exit;
-    // If the button is clicked when logged in
+        // If the button is clicked when logged in
     } else {
         // If user is following, unfollow them; otherwise, follow them
         if ($isLiked) {
