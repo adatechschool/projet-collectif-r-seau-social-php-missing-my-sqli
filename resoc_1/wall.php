@@ -64,13 +64,24 @@ include 'checkConnection.php';
                 if ($enCoursDeTraitement) {
                     // Récupère ce qu'il y a dans le formulaire
                     $authorId = $_SESSION['connected_id'];
+                  
+
                     $postContent = $_POST['message'];
-
-
-                    //Sécurise
+                    //Etape 3 : Petite sécurité
+                    // pour éviter les injection sql : https://www.w3schools.com/sql/sql_injection.asp
                     $authorId = intval($mysqli->real_escape_string($authorId));
                     $postContent = $mysqli->real_escape_string($postContent);
-                    //Construit la requête
+                    //Etape 4 : construction de la requete
+
+                    $tagLabel = $_POST['elements'];
+                    $sql = "SELECT id FROM tags WHERE label = '$tagLabel'";
+                    $resultat = $mysqli->query($sql);
+                    $tag = $resultat->fetch_assoc();
+                    $tagId = $tag['id'];
+
+                    
+                    echo "<pre>" . print_r($resultatpost) . "</pre>";
+
                     $lInstructionSql = "INSERT INTO posts "
                         . "(id, user_id, content, created) "
                         . "VALUES (NULL, "
@@ -78,22 +89,59 @@ include 'checkConnection.php';
                         . "'" . $postContent . "', "
                         . "NOW());"
                     ;
-
+                    
+                    // Etape 5 : execution
                     $ok = $mysqli->query($lInstructionSql);
                     if (!$ok) {
                         echo "Impossible d'ajouter le message: " . $mysqli->error;
                     }
-
                 }
+    
+                $sql = "SELECT posts.id FROM posts WHERE content = '$postContent'";
+                $resultatpost = $mysqli->query($sql);
+                $post = $resultatpost->fetch_assoc();
+                $postId = $post['id'];
+                            
+                
+                $lInstructionSqlposttag ="INSERT INTO posts_tags "
+                . "(id, post_id, tag_id) "
+                . "VALUES (NULL, "
+                .  $postId . ", "
+                . "'" . $tagId . "')"
+                ;
+                $okpost = $mysqli->query($lInstructionSqlposttag);
+            //     if (!$okpost) {
+            // echo "Impossible d'ajouter le tag au post: " . $mysqli->error;
+            //     }
+
                 ?>
+
+
+
+<!-- envoi du message -->
                 <form action="wall.php" method="post">
                     <input type='hidden' name='???' value='achanger'>
                     <dl>
+                        
+                         <label for="elements">Sélectionnez un mot-clé :</label>
+                    <select name="elements" id="elements">
 
+        <?php
+            
+            $sql = "SELECT * FROM tags  ";    
+            $resultat = $mysqli->query($sql);        
+            while ($tag = $resultat->fetch_assoc()) {
+                echo "<option value='" . $tag['label']  . "'>" . $tag['label']  . "</option>";
+            }
+       ?>
+    </select>
+                                
                         </select></dd>
                         <dt><label for='message'>Message</label></dt>
                         <dd><textarea name='message'></textarea></dd>
-                    </dl>
+                      
+  
+    
                     <input type='submit'>
                 </form>
             </article>

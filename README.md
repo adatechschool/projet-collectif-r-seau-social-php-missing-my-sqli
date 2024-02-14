@@ -27,4 +27,3 @@ Projet collectif dans le cadre d'ADA TECH SCHOOL
 - [ ] Profil amélioré
 - [x] Déconnexion
 
-
