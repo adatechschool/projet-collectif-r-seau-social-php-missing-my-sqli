@@ -24,10 +24,10 @@
         <main>
             <?php
 
-            // Etape 1: Ouvrir une connexion avec la base de donnée.
+            // Se connecte avec la base de données
             
             include 'getDataBase.php';
-            //verification
+            // Vérifie
             if ($mysqli->connect_errno) {
                 echo "<article>";
                 echo ("Échec de la connexion : " . $mysqli->connect_error);
@@ -36,9 +36,7 @@
                 exit();
             }
 
-            // Etape 2: Poser une question à la base de donnée et récupérer ses informations
-            // cette requete vous est donnée, elle est complexe mais correcte, 
-            // si vous ne la comprenez pas c'est normal, passez, on y reviendra
+            // Interroge la base de données
             $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
@@ -58,7 +56,7 @@
                     LIMIT 5
                     ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
-            // Vérification
+            // Vérifie
             if (!$lesInformations) {
                 echo "<article>";
                 echo ("Échec de la requete : " . $mysqli->error);
@@ -66,24 +64,15 @@
                 exit();
             }
 
-            // Etape 3: Parcourir ces données et les ranger bien comme il faut dans du html
-            // NB: à chaque tour du while, la variable post ci dessous reçois les informations du post suivant.
+            // Parcourt ces données et les range dans le html
             
-            $array_button_post_id = array();
-            // $button_post_id = $array_button_post_id[$];
+
+
 
             while ($post = $lesInformations->fetch_assoc()) {
-                //la ligne ci-dessous doit etre supprimée mais regardez ce 
-                //qu'elle affiche avant pour comprendre comment sont organisées les information dans votre 
-                //  echo "<pre>" . print_r($post, 1) . "</pre>";
-                 $postID = $post['id'];
-                //  echo $postID;
-            
-                // @todo : Votre mission c'est de remplacer les AREMPLACER par les bonnes valeurs
-                // ci-dessous par les bonnes valeurs cachées dans la variable $post 
-                // on vous met le pied à l'étrier avec created
-                // 
-                // avec le ? > ci-dessous on sort du mode php et on écrit du html comme on veut... mais en restant dans la boucle
+
+                $postID = $post['id'];
+
                 ?>
                 <article>
                     <h3>
@@ -103,22 +92,21 @@
                     <footer>
                         <small>♥
                             <?php echo $post['like_number'] ?>
-                            <!-- ADD LIKE BUTTON HERE -->
-                            <?php include 'likeButton.php'; 
-                            array_push($array_button_post_id, $postID);
+                            <!-- Ajoute le bouton like -->
+                            <?php include 'likeButton.php';
                             ?>
 
                         </small>
                         <?php
-                        $tags = explode(',', $post['taglist']); // Explode the taglist into an array of tags
+                        $tags = explode(',', $post['taglist']); // Sépare les tags dans un tableau
                         $tagIDs = explode(',', $post['tag_ids']);
-                        $totalTags = count($tags); // Get the total number of tags
+                        $totalTags = count($tags); // Récupère le nombre total de tags
                         foreach ($tags as $index => $tag) {
-                            // Trim each tag to remove any leading or trailing spaces
+                            // Remets en forme chaque tag
                             $tag = trim($tag);
-                            // Display each tag preceded by #
+                            // Affiche chaque tag précédé d'un #
                             echo '<a href="tags.php?tag_id=' . $tagIDs[$index] . '">#' . $tag . '</a>';
-                            // Append a comma if it's not the last tag
+                            // Ajoute une virgule si ce n'est pas le dernier tag
                             if ($index < $totalTags - 1) {
                                 echo ', ';
                             }
@@ -128,12 +116,11 @@
                     </footer>
                 </article>
                 <?php
-                // avec le <?php ci-dessus on retourne en mode php 
-            } // cette accolade ferme et termine la boucle while ouverte avant.
-            
-            echo "<pre>" . print_r($array_button_post_id) . "<pre>";
+
+            }
+
             ?>
-            
+
 
         </main>
     </div>

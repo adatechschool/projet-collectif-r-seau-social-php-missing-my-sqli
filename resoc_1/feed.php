@@ -1,6 +1,6 @@
 <?php
-    include 'header.php';
-    include 'checkConnection.php';
+include 'header.php';
+include 'checkConnection.php';
 ?>
 
 <!doctype html>
@@ -17,20 +17,10 @@
 
     <div id="wrapper">
         <?php
-        /**
-         * Cette page est TRES similaire à wall.php. 
-         * Vous avez sensiblement à y faire la meme chose.
-         * Il y a un seul point qui change c'est la requete sql.
-         */
-        /**
-         * Etape 1: Le mur concerne un utilisateur en particulier
-         */
-        // include 'user.php';
+
         ?>
         <?php
-        /**
-         * Etape 2: se connecter à la base de donnée
-         */
+
         include 'getDataBase.php';
         ?>
 
@@ -66,6 +56,7 @@
                     SELECT posts.content,
                     posts.created,
                     posts.user_id,
+                    posts.id,
                     users.alias as author_name,  
                     count(likes.id) as like_number,  
                     GROUP_CONCAT(DISTINCT tags.id ORDER BY tags.label ASC) AS tag_ids,
@@ -87,6 +78,8 @@
 
             while ($post = $lesInformations->fetch_assoc()) {
 
+                $postID = $post['id'];
+
                 /**
                  * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
                  * A vous de retrouver comment faire la boucle while de parcours...
@@ -99,16 +92,19 @@
                         </time>
                     </h3>
                     <address>
-                    <a href="wall.php?user_id=<?php echo $post['user_id'] ?>"><?php echo $post['author_name'] ?></a>
+                        <a href="wall.php?user_id=<?php echo $post['user_id'] ?>">
+                            <?php echo $post['author_name'] ?>
+                        </a>
                     </address>
                     <div>
                         <?php echo $post['content'] ?>
                     </div>
                     <footer>
                         <small>♥
-                            <?php echo $post['like_number'] ?>
+                            <?php echo $post['like_number'];
+                            include 'likeButton.php' ?>
                         </small>
-                        <?php 
+                        <?php
                         $tags = explode(',', $post['taglist']); // Explode the taglist into an array of tags
                         $tagIDs = explode(',', $post['tag_ids']);
                         $totalTags = count($tags); // Get the total number of tags

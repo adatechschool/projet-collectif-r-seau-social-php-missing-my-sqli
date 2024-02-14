@@ -11,7 +11,6 @@ $userId = $_SESSION['connected_id'];
         <a href="news.php">Actualités</a>
         <a href="wall.php">Mur</a>
         <a href="feed.php">Flux</a>
-        <a href="tags.php?tag_id=1">Mots-clés</a>
     </nav>
     <nav id="user">
         <a href="#">Profil</a>
@@ -19,6 +18,15 @@ $userId = $_SESSION['connected_id'];
             <li><a href="settings.php">Paramètres</a></li>
             <li><a href="followers.php">Mes suiveurs</a></li>
             <li><a href="subscriptions.php">Mes abonnements</a></li>
+            <?php
+            session_start();
+
+            if (isset($_SESSION['connected_id'])) {
+                echo '<li><a href="deconnexion.php">Déconnexion</a></li>';
+            } else {
+                echo '<li><a href="login.php">Connexion</a></li>';
+            }
+            ?>
         </ul>
 
     </nav>

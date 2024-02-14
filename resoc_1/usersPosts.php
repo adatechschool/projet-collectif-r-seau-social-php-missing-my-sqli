@@ -59,9 +59,9 @@ include 'user.php';
                     <?php
                     // Check if user is not logged in
                     if (!isset($_SESSION['connected_id'])) {
-                    ?>
-                    <!-- Display button for not logged in user -->
-                     <input type="submit" name="submit" value="Suivre">
+                        ?>
+                        <!-- Display button for not logged in user -->
+                        <input type="submit" name="submit" value="Suivre">
                     <?php } else {
                         // Check if the user is following
                         $followed_user_id = $_GET['user_id'];
@@ -92,7 +92,7 @@ include 'user.php';
                     if (!isset($_SESSION['connected_id'])) {
                         header('Location: login.php');
                         exit;
-                    // If the button is clicked when logged in
+                        // If the button is clicked when logged in
                     } else {
                         // If user is following, unfollow them; otherwise, follow them
                         if ($isFollowing) {
