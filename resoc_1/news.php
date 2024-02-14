@@ -124,7 +124,7 @@
                                         // Affiche le bouton aimé ou non
                                         ?>
                                         <input type="submit" name="submit" id="<?php $liked_post_id ?>"
-                                            value="<?php echo $liked_post_id, $buttonLabel; ?>">
+                                            value="<?php echo  $buttonLabel; ?>">
                                     <?php } ?>
                                 </form>
                             </body>
