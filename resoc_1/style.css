@@ -1,6 +1,119 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+@font-face {
+    font-family: 'Sentient-Regular';
+    src: url('../fonts/Sentient-Regular.otf') format('opentype');
+}
+
 body{
-    background-color: #003;
+    background-color: #DFDBFE;
     font-family: Arial;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post {
+    display: flex;
+    width: 32.5rem;
+    min-width: 18.75rem;
+    max-width: 32.5rem;
+    padding: 0.625rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.625rem;
+    
+    border-radius: 1.25rem;
+    border: 1px solid #E2E1DE;
+    
+    background: rgba(241, 240, 239, 0.50);
+    
+    backdrop-filter: blur(5px);
+}
+
+.post-content {
+    display: flex;
+    padding: 1.875rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.9375rem;
+    align-self: stretch;
+    
+    border-radius: 0.625rem;
+    border: 1px solid #E2E1DE;
+    
+    background: #FDFDFC;
+}
+
+.post-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+.post-author {
+    color: #21201C;
+    text-align: justify;
+    font-family: "Inter";
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+.post-date {
+    color: #21201C;
+    text-align: justify;
+    font-family: Inter;
+    font-size: 1.25rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.post-message {
+    /* align-self: stretch; */
+    color: #21201C;
+    text-align: justify;
+    font-family: Sentient;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0;
+}
+
+.post-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    align-self: stretch;
+}
+
+.post-tag {
+    display: flex;
+    padding: 0.3125rem 0.625rem;
+    align-items: center;
+    border-radius: 0.625rem;
+    border: 1px solid #E2E1DE;
+    
+    background: #FFF;
+}
+
+.post-tag > p {
+    color: #21201C;
+
+    text-align: justify;
+    font-family: Inter;
+    font-size: 1.25rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0;
 }
 
 a{text-decoration: none; color:black;}

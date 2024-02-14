@@ -3,8 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>ReSoC - Actualités</title>
-    <meta name="author" content="Julien Falconnet">
+    <title>Émotions accueil</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -12,15 +11,16 @@
     <?php
     include 'header.php';
     ?>
+
     <div id="wrapper">
-        <aside>
+        <!-- <aside>
             <img src="user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
                 <h3>TEST</h3>
                 <p>Sur cette page vous trouverez les derniers messages de
                     tous les utilisatrices du site.</p>
             </section>
-        </aside>
+        </aside> -->
         <main>
             <?php
 
@@ -75,6 +75,41 @@
 
                 ?>
                 <!-- Affiche les articles -->
+                <div class="post">
+                    <div class="post-content">
+                        <div class="post-details">
+                            <a class="post-author" href="usersPosts.php?user_id=<?php echo $post['user_id'] ?>"><?php echo $post['author_name'] ?></a>
+                            <time class="post-date"><?php echo $post['created'] ?></time>
+                        </div>
+                        <p class="post-message"><?php echo $post['content'] ?></p>
+                    </div>
+                    <div class="post-bottom">
+                        <div class="post-tag">
+                        <p><?php
+                        $tags = explode(',', $post['taglist']); // Sépare les tags dans un tableau
+                        $tagIDs = explode(',', $post['tag_ids']);
+                        $totalTags = count($tags); // Récupère le nombre total de tags
+                        foreach ($tags as $index => $tag) {
+                            // Remets en forme chaque tag
+                            $tag = trim($tag);
+                            // Affiche chaque tag précédé d'un #
+                            echo '<a href="tags.php?tag_id=' . $tagIDs[$index] . '">#' . $tag . '</a>';
+                            // Ajoute une virgule si ce n'est pas le dernier tag
+                            if ($index < $totalTags - 1) {
+                                echo ', ';
+                            }
+                        }
+                        ?></p>
+                        </div>
+                        <div class="post-tag">
+                        ♥
+                            <?php echo $post['like_number'] ?>
+                            <!-- Ajoute le bouton like -->
+                            <?php include 'likeButton.php';
+                            ?>
+                    </div>
+                    </div>
+                </div>
                 <article>
                     <h3>
                         <time>
@@ -124,6 +159,22 @@
 
 
         </main>
+    </div>
+    <div class="center">
+        <div class="post">
+            <div class="post-content">
+                <div class="post-details">
+                    <a class="post-author" href="usersPosts.php?user_id=1">Pierre</a>
+                    <time class="post-date">2021-11-25 12:46:00</time>
+                </div>
+                <p class="post-message">Promesse d'embauche signée! Beaucoup de joie mais du stress en attendant le premier jour</p>
+            </div>
+            <div class="post-bottom">
+                <div class="post-tag">
+                    <p>test</p>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 
