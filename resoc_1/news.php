@@ -76,9 +76,15 @@
                 //la ligne ci-dessous doit etre supprimée mais regardez ce 
                 //qu'elle affiche avant pour comprendre comment sont organisées les information dans votre 
                 //  echo "<pre>" . print_r($post, 1) . "</pre>";
+<<<<<<< HEAD
                 $postID = $post['id'];
                 echo $postID;
 
+=======
+                 $postID = $post['id'];
+                //  echo $postID;
+            
+>>>>>>> a940d8f367ffc38c7e554d505f18f115adc8e2eb
                 // @todo : Votre mission c'est de remplacer les AREMPLACER par les bonnes valeurs
                 // ci-dessous par les bonnes valeurs cachées dans la variable $post 
                 // on vous met le pied à l'étrier avec created
