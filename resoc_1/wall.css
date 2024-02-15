@@ -1,0 +1,55 @@
+.message-box {
+    width: 100%; /* Make the textarea fill the entire width of its container */
+    height: 100%; /* Make the textarea fill the entire height of its container */
+    box-sizing: border-box; /* Include padding and border in the width and height */
+    resize: none; /* Prevent resizing of the textarea */
+    background-color: #FDFDFC; /* Change the background color */
+    padding: 1.875rem; /* Add padding as needed */
+    font-family: "Sentient", sans-serif; /* Add font-family */
+    font-size: 1.3rem; /* Add font-size */
+    color: #21201C; /* Add text color */
+    border-radius: 0.625rem;
+    border: 1px solid #E2E1DE;
+}
+
+.message-submit {
+    font-family: "Sentient";
+    font-size: 1.2rem;
+    border-radius: 0.625rem;
+    border: 1px solid #E2E1DE;
+    padding: 1.3rem 1.875rem 1.3rem 1.875rem;
+    color: rgba(33, 32, 28, 0.50);
+    background: linear-gradient(180deg, #FDFDFC 0%, #F8F0FB 100%);
+
+}
+
+.tag-dropdown {
+    font-family: "Sentient";
+    font-size: 1.2rem;
+    border-radius: 0.625rem;
+    background-color: #FDFDFC;
+    border: 1px solid #E2E1DE;
+    padding: 1.3rem 1.875rem 1.3rem 1.875rem;
+    width : 100%;
+    color: rgba(33, 32, 28, 0.50);
+    margin-right: 0.625rem;
+}
+
+.post-delete {
+    display: flex;
+    padding: 0.3125rem 0.625rem;
+    align-items: center;
+    border-radius: 0.625rem;
+    border: 1px solid #E2E1DE;
+    
+    background: #FFF;
+    color: #21201C;
+
+    text-align: justify;
+    font-family: Inter;
+    font-size: 1.25rem;
+    font-style: italic;
+    font-weight: 400;
+    line-height: normal;
+    margin: 0;
+}

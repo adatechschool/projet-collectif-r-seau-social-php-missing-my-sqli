@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Émotions accueil</title>
+    <title>Émotions</title>
     <link rel="stylesheet" href="style.css" />
 </head>
 
@@ -14,7 +14,7 @@
 
     <div class="center">
         <?php
-        // Se connecte avec la base de données
+        // Se connecter avec la base de données
         include 'getDataBase.php';
         // Vérifie
         if ($mysqli->connect_errno) {
@@ -103,6 +103,7 @@
         }
         ?>
     </div>
+    <div class="background"></div>
 </body>
 
 </html>

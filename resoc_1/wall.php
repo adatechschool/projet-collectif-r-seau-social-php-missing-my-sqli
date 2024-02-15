@@ -8,52 +8,22 @@ include 'checkConnection.php';
 
 <head>
     <meta charset="utf-8">
-    <title>ReSoC - Mur</title>
-    <meta name="author" content="Julien Falconnet">
+    <title>Mon profil</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="wall.css" />
 </head>
 
 <body>
-
-    <div id="wrapper">
-        <?php
-
-        ?>
-        <?php
-        /**
-         * Se connecte à la base de donnée
-         */
+    <div class="center">
+       <?php
+        // Se connecter à la base de données
         include 'getDataBase.php';
-
-
         ?>
-
-        <aside>
-
-            <!-- 
-             * Récupère le nom de l'utilisatrice
-             -->
-
-
-            <img src="user.jpg" alt="Portrait de l'utilisatrice" />
-            <section>
-                <h3>Présentation</h3>
-                <p>Sur cette page vous trouverez tous les message de l'utilisatrice :
-                    (n°
-                    <?php echo $userId ?>)
-                </p>
-            </section>
-        </aside>
         <main>
             <article>
-                <h2>Poster un message</h2>
+
                 <?php
-
-
-
                 include 'getDataBase.php';
-
-
 
                 // Vérifie si on traite ou affiche le formulaire
                 
@@ -118,38 +88,41 @@ include 'checkConnection.php';
 
 
 
-<!-- envoi du message -->
+                <!-- envoi du message -->
                 <form action="wall.php" method="post">
                     <input type='hidden' name='???' value='achanger'>
                     <dl>
                         
-                         <label for="elements">Sélectionnez un mot-clé :</label>
-                    <select name="elements" id="elements">
-
-        <?php
-            
-            $sql = "SELECT * FROM tags  ";    
-            $resultat = $mysqli->query($sql);        
-            while ($tag = $resultat->fetch_assoc()) {
-                echo "<option value='" . $tag['label']  . "'>" . $tag['label']  . "</option>";
-            }
-       ?>
-    </select>
+                    <!-- <label for="elements">Sélectionnez un mot-clé :</label> -->
+                    
                                 
                         </select></dd>
-                        <dt><label for='message'>Message</label></dt>
-                        <dd><textarea name='message'></textarea></dd>
+                        <!-- <dt><label for='message'>Message</label></dt> -->
+                        
                       
-  
-    
-                    <input type='submit'>
+                    
                 </form>
             </article>
-
+            <div class="post">
+                <textarea class="message-box" name='message' placeholder="écris ici..."></textarea>
+                <div class="post-bottom">
+                    <select class="tag-dropdown"name="elements" id="elements">
+                        <option value="" disabled selected>choisi ton émotion ici...</option>
+                        <?php
+                        $sql = "SELECT * FROM tags  ";    
+                        $resultat = $mysqli->query($sql);        
+                        while ($tag = $resultat->fetch_assoc()) {
+                            echo "<option value='" . $tag['label']  . "'>" . $tag['label']  . "</option>";
+                        }
+                        ?>
+                    </select>
+                    <input class="message-submit" value="Envoyer" type='submit'>
+                </div>
+            </div>
             <?php
-            /**
-             * Récupère tous les messages de l'utilisatrice
-             */
+            
+            // Récupère tous les messages de l'utilisatrice
+            
             $laQuestionEnSql = "
                     SELECT posts.content, 
                     posts.created, 
@@ -170,54 +143,54 @@ include 'checkConnection.php';
             if (!$lesInformations) {
                 echo ("Échec de la requete : " . $mysqli->error);
             }
-
-            /**
-             * Parcourt tous les messsages et remplit correctement le HTML avec les bonnes valeurs php
-             */
+            
+            // Parcourt tous les messsages et remplit correctement le HTML avec les bonnes valeurs php
+            
             while ($post = $lesInformations->fetch_assoc()) {
-
-
                 ?>
-                <article>
-                    <h3>
-                        <time datetime='2020-02-01 11:12:13'>
-                            <?php echo $post['created'] ?>
-                        </time>
-                    </h3>
-                    <address>
-                        <?php echo $post['author_name'] ?>
-                    </address>
-                    <div>
-                        <?php echo $post['content'] ?>
+            <div class="post">
+                <div class="post-content">
+                    <div class="post-details">
+                        <a class="post-author" href="usersPosts.php?user_id=<?php echo $post['user_id'] ?>"><?php echo $post['author_name'] ?></a>
+                        <time class="post-date"><?php echo $post['created'] ?></time>
                     </div>
-                    <footer>
-                        <small>♥
-                            <?php echo $post['like_number'] ?>
-                        </small>
-
-                        <?php
-                        $tags = explode(',', $post['taglist']);
-                        $tagIDs = explode(',', $post['tag_ids']);
-                        $totalTags = count($tags);
-                        foreach ($tags as $index => $tag) {
-                            $tag = trim($tag);
-                            echo '<a href="tags.php?tag_id=' . $tagIDs[$index] . '">#' . $tag . '</a>';
-                            if ($index < $totalTags - 1) {
-                                echo ', ';
-                            }
+                    <p class="post-message"><?php echo $post['content'] ?></p>
+                </div>
+                <div class="post-bottom">
+                    <div class="post-tag">
+                    <p><?php
+                    $tags = explode(',', $post['taglist']); // Sépare les tags dans un tableau
+                    $tagIDs = explode(',', $post['tag_ids']);
+                    $totalTags = count($tags); // Récupère le nombre total de tags
+                    foreach ($tags as $index => $tag) {
+                        // Remets en forme chaque tag
+                        $tag = trim($tag);
+                        // Affiche chaque tag précédé d'un #
+                        echo '<a href="tags.php?tag_id=' . $tagIDs[$index] . '">#' . $tag . '</a>';
+                        // Ajoute une virgule si ce n'est pas le dernier tag
+                        if ($index < $totalTags - 1) {
+                            echo ', ';
                         }
-                        ?>
-                        <form method="post" action="deletePost.php">
-                            <input type="submit" value="Supprimer">
-                            <input type="hidden" name="post_id" value="<?php echo $post['post_id']; ?>">
-                        </form>
-                    </footer>
-                </article>
+                    }
+                    ?></p>
+                    </div>
+                    <form method="post" action="deletePost.php">
+                        <input class="post-delete" type="submit" value="Supprimer">
+                        <input type="hidden" name="post_id" value="<?php echo $post['post_id']; ?>">
+                    </form>
+                    <div class="post-tag">
+                    ♥
+                        <?php echo $post['like_number'] ?>
+                        <!-- Ajoute le bouton like -->
+                    </div>
+                </div>
+            </div>
             <?php } ?>
 
 
         </main>
     </div>
+    <div class="background"></div>
 </body>
 
 </html>
